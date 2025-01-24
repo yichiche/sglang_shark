@@ -986,7 +986,8 @@ def fused_experts_impl(
             block_shape=block_shape,
         )
 
-        ops.silu_and_mul(intermediate_cache2, intermediate_cache1.view(-1, N))
+        #ops.silu_and_mul(intermediate_cache2, intermediate_cache1.view(-1, N))
+        torch.ops._C.silu_and_mul(intermediate_cache2, intermediate_cache1.view(-1, N))
 
         invoke_fused_moe_kernel(
             intermediate_cache2,

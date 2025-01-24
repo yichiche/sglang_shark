@@ -187,7 +187,8 @@ class CustomAllreduce:
         # this checks hardware and driver support for NVLink
         assert is_cuda()
 
-        full_nvlink = is_full_nvlink(physical_device_ids)
+        #full_nvlink = is_full_nvlink(physical_device_ids)
+        full_nvlink = False
         if world_size > 2 and not full_nvlink:
             logger.warning(
                 "Custom allreduce is disabled because it's not supported on"
