@@ -654,8 +654,10 @@ def decode_attention_wave(
 ):
 
     num_seqs, num_query_heads, head_size = q.shape
-    _, _, num_kv_heads, _ = k_buffer.shape
-    _, _, _, head_size_kv = v_buffer.shape
+    #_, _, num_kv_heads, _ = k_buffer.shape
+    #_, _, _, head_size_kv = v_buffer.shape
+    num_kv_heads = k_buffer.shape[1]
+    head_size_kv = head_size
     block_size = 32
     shape = paged_decode_attention_shape(
         num_query_heads,
@@ -736,7 +738,8 @@ def decode_attention_fwd(
     sm_scale,
     logit_cap=0.0,
 ):
-    assert num_kv_splits == attn_logits.shape[2]
+    #assert num_kv_splits == attn_logits.shape[2]
+    assert num_kv_splits == attn_logits.shape[0]
     kv_group_num = q.shape[1] // v_buffer.shape[1]
 
     if kv_group_num == 1:
