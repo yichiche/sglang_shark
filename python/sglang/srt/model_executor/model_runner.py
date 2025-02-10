@@ -35,6 +35,12 @@ from sglang.srt.layers.attention.double_sparsity_backend import DoubleSparseAttn
 from sglang.srt.layers.attention.flashinfer_backend import FlashInferAttnBackend
 from sglang.srt.layers.attention.torch_native_backend import TorchNativeAttnBackend
 from sglang.srt.layers.attention.triton_backend import TritonAttnBackend
+from sglang.srt.layers.attention.wave_backend import WaveAttnBackend
+# from sglang.srt.layers.dp_attention import (
+#     get_attention_tp_group,
+#     get_attention_tp_size,
+#     initialize_dp_attention,
+# )
 from sglang.srt.layers.logits_processor import LogitsProcessorOutput
 from sglang.srt.layers.sampler import Sampler
 from sglang.srt.layers.torchao_utils import apply_torchao_config_to_model
@@ -619,6 +625,8 @@ class ModelRunner:
                 self.attn_backend = DoubleSparseAttnBackend(self)
             else:
                 self.attn_backend = TritonAttnBackend(self)
+        elif self.server_args.attention_backend == "wave":
+            self.attn_backend = WaveAttnBackend(self)
         elif self.server_args.attention_backend == "torch_native":
             self.attn_backend = TorchNativeAttnBackend(self)
         else:
