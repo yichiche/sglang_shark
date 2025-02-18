@@ -274,7 +274,7 @@ class CudaGraphRunner:
         return is_bs_supported and is_encoder_lens_supported
 
     def capture(self):
-        with graph_capture() as graph_capture_context:
+        with graph_capture(self.model_runner.device) as graph_capture_context:
             self.stream = graph_capture_context.stream
             capture_range = (
                 tqdm.tqdm(self.capture_bs)

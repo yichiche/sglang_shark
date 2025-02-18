@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Optional
 import torch
 
 from sglang.srt.layers.attention import AttentionBackend
-from sglang.srt.layers.dp_attention import get_attention_tp_size
+# from sglang.srt.layers.dp_attention import get_attention_tp_size
 from sglang.srt.model_executor.forward_batch_info import ForwardBatch, ForwardMode
 
 if TYPE_CHECKING:
@@ -31,7 +31,7 @@ class WaveAttnBackend(AttentionBackend):
         self.extend_attention_fwd = extend_attention_wave
 
         self.num_head = (
-            model_runner.model_config.num_attention_heads // get_attention_tp_size()
+            model_runner.model_config.num_attention_heads // model_runner.tp_size
         )
 
         self.num_kv_splits = model_runner.server_args.triton_attention_num_kv_splits
